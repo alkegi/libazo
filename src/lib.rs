@@ -22,6 +22,7 @@ use self::range::RangeDecoder;
 
 /// Errors returned by [`extract_azo`].
 #[derive(Debug)]
+#[non_exhaustive]
 pub enum AzoError {
     /// An I/O error while reading the stream or writing the output.
     Io(std::io::Error),
