@@ -1,7 +1,7 @@
 //! Fixed-size move-to-front (MRU) list used by the match model.
 
 pub struct RecentList<T: Copy> {
-    pub(crate) slots: Vec<T>,
+    slots: Vec<T>,
 }
 
 impl<T: Copy> RecentList<T> {
