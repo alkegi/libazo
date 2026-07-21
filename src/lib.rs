@@ -38,7 +38,14 @@ impl fmt::Display for AzoError {
     }
 }
 
-impl std::error::Error for AzoError {}
+impl std::error::Error for AzoError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Io(e) => Some(e),
+            Self::Failed(_) => None,
+        }
+    }
+}
 
 impl From<std::io::Error> for AzoError {
     fn from(e: std::io::Error) -> Self {
