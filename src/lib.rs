@@ -82,7 +82,8 @@ pub fn extract_azo<R: Read, W: Write>(
     // Grow from the bytes actually present rather than pre-allocating the
     // declared size, so a bogus compressed_size can't trigger a huge alloc.
     let mut data = Vec::new();
-    if (&mut *reader)
+    if reader
+        .by_ref()
         .take(compressed_size)
         .read_to_end(&mut data)? as u64
         != compressed_size
