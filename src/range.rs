@@ -59,6 +59,13 @@ impl<'a> RangeDecoder<'a> {
         }
     }
 
+    /// Whether the bit reader fetched every input byte. Reads past the end
+    /// do not advance the position, so tag lookahead overread still counts
+    /// as fully consumed.
+    pub fn fully_consumed(&self) -> bool {
+        self.reader.pos == self.reader.data.len()
+    }
+
     fn rescale(&mut self) {
         // Phase 1: MSB convergence
         while (self.low & MSB) == (self.up & MSB) {

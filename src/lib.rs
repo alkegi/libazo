@@ -215,6 +215,12 @@ fn decompress_block(data: &[u8], block_size: usize) -> Result<Vec<u8>, AzoError>
         }
     }
 
+    if !entropy.fully_consumed() {
+        return Err(AzoError::Failed(
+            "trailing bytes in compressed block".into(),
+        ));
+    }
+
     Ok(buf)
 }
 

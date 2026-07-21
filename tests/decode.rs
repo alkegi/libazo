@@ -43,6 +43,29 @@ fn repeated_bytes() {
 }
 
 #[test]
+fn rejects_trailing_garbage_in_block() {
+    // The tag lookahead can absorb up to 4 trailing bytes, so append 8 to
+    // guarantee an unconsumed tail.
+    let data = std::fs::read(fixture("gpl.txt.azo")).expect("read fixture");
+    let block_size = u32::from_be_bytes(data[2..6].try_into().unwrap());
+    let compress_size = u32::from_be_bytes(data[6..10].try_into().unwrap());
+    let payload = &data[14..14 + compress_size as usize];
+
+    let padded_size = compress_size + 8;
+    let mut s = vec![0x31, 0x00];
+    s.extend_from_slice(&block_size.to_be_bytes());
+    s.extend_from_slice(&padded_size.to_be_bytes());
+    s.extend_from_slice(&(block_size ^ padded_size).to_be_bytes());
+    s.extend_from_slice(payload);
+    s.extend_from_slice(&[0u8; 8]);
+    s.extend_from_slice(&[0u8; 12]); // terminal block
+
+    let mut out = Vec::new();
+    let r = libazo::extract_azo(&mut Cursor::new(&s), &mut out, s.len() as u64, None, None);
+    assert!(r.is_err(), "trailing garbage must be rejected");
+}
+
+#[test]
 fn executable_with_x86_filter() {
     // Multi-block stream with the x86 CALL/JMP filter enabled (flags bit 0).
     let (out, crc) = decode("bandizip32.exe.azo");
