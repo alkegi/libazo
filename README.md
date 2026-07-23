@@ -2,6 +2,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/libazo.svg)](https://crates.io/crates/libazo)
 [![docs.rs](https://img.shields.io/docsrs/libazo)](https://docs.rs/libazo)
+[![CI](https://github.com/alkegi/libazo/actions/workflows/ci.yml/badge.svg)](https://github.com/alkegi/libazo/actions/workflows/ci.yml)
 
 A decompression library for the AZO format.
 
