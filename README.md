@@ -15,6 +15,10 @@ println!("{} bytes, crc {crc:08x}", out.len());
 
 See the [documentation](https://docs.rs/libazo) for the full API.
 
+## Docs
+
+[https://github.com/alkegi/docs](https://github.com/alkegi/docs)
+
 ## Reference
 
 - [`xunazo`](https://github.com/kippler/xunazo)
